@@ -2,9 +2,13 @@ from game.control_actors_action import ControlActorsAction
 from game.move_actors_action import MoveActorsAction
 from game.input_service import InputService
 from game.output_service import OutputService
-from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
+from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING
 
+import random
 import arcade
+
+from project.game.car import Car
+from project.game.constants import BLOCK_SIZE
 
 class Director:
     """A code template for a person who directs the game. The responsibility of 
@@ -35,6 +39,17 @@ class Director:
             self (Director): an instance of Director.
         """
         arcade.run()
+        arcade.set_background_color(arcade.color.WHITE)
+
+        for _ in range(2):
+            Car(
+                "images/car.png",
+                SCALING,
+                random.randint(1, SCREEN_WIDTH),
+                random.randint(1, SCREEN_HEIGHT),
+                BLOCK_SIZE * 2,
+                20
+            )
 
         while self._keep_playing:
             self._get_inputs()
