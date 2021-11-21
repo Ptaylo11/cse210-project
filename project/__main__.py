@@ -1,7 +1,7 @@
-from game import director
+from game.director import Director
 
 def main():
-    game = director.Director()
+    game = Director()
     game.start_game()
 
 if __name__ == "__main__":

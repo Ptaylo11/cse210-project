@@ -10,7 +10,6 @@ class ControlActorsAction(Action):
         
         self.actors_dict = {
             "frog": Frog(),
-            "car": Car()
         }
 
 

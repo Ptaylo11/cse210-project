@@ -1,9 +1,7 @@
-import sys
 from game import constants
-from game.action import Action
-import Arcade
+import arcade
 
-class HandleCollisionsAction(Action):
+class HandleCollisionsAction:
     """ Checks if the frog is overlaped by any other sprites.
     Returns true if overlapping, false if not. 
     """
