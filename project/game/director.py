@@ -7,8 +7,8 @@ from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING
 import random
 import arcade
 
-from project.game.car import Car
-from project.game.constants import BLOCK_SIZE
+from game.car import Car
+from game.constants import BLOCK_SIZE
 
 class Director:
     """A code template for a person who directs the game. The responsibility of 
