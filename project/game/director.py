@@ -38,18 +38,19 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        arcade.run()
         arcade.set_background_color(arcade.color.WHITE)
 
         for _ in range(2):
             Car(
-                "images/car.png",
+                "images\car.png",
                 SCALING,
                 random.randint(1, SCREEN_WIDTH),
                 random.randint(1, SCREEN_HEIGHT),
                 BLOCK_SIZE * 2,
                 20
             )
+        
+        arcade.run()
 
         while self._keep_playing:
             self._get_inputs()
