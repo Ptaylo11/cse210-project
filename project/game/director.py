@@ -42,7 +42,7 @@ class Director:
 
         for _ in range(2):
             Car(
-                "images\car.png",
+                "project\game\images\car.png",
                 SCALING,
                 random.randint(1, SCREEN_WIDTH),
                 random.randint(1, SCREEN_HEIGHT),
