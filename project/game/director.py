@@ -52,7 +52,7 @@ class Director:
         frog_movement = InputService.check_for_input()
         
         if frog_movement is not None:
-            ControlActorsAction.set_frog_movement(frog_movement)
+            ControlActorsAction.set_movement("frog", frog_movement)
 
 
     def _do_updates(self):
@@ -62,7 +62,9 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        MoveActorsAction.move_actors()
+        # MoveActorsAction.move_sprites()
+
+        arcade.SpriteList.update()
 
         
     def _do_outputs(self):
@@ -73,4 +75,6 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        OutputService.draw_actors()
+        # OutputService.draw_sprites()
+
+        arcade.SpriteList.draw()
