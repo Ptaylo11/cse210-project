@@ -1,3 +1,4 @@
+from arcade.sprite_list.sprite_list import SpriteList
 from game.control_actors_action import ControlActorsAction
 from game.move_actors_action import MoveActorsAction
 from game.input_service import InputService
@@ -8,6 +9,7 @@ import random
 import arcade
 
 from game.car import Car
+from game.frog import Frog
 from game.constants import BLOCK_SIZE
 
 class Director:
@@ -29,7 +31,9 @@ class Director:
             self (Director): an instance of Director.
         """
         self._keep_playing = True
-        self.window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        self.window = arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        self.car_list = SpriteList()
+        self.all_sprites = SpriteList()
 
         
     def start_game(self):
@@ -41,7 +45,7 @@ class Director:
         arcade.set_background_color(arcade.color.WHITE)
 
         for _ in range(2):
-            Car(
+            car = Car(
                 "project\game\images\car.png",
                 SCALING,
                 random.randint(1, SCREEN_WIDTH),
@@ -49,13 +53,19 @@ class Director:
                 BLOCK_SIZE * 2,
                 20
             )
+
+            self.car_list.append(car)
+            self.all_sprites.append(car)
         
-        arcade.run()
+        frog = Frog('project\game\images\\frog.jpeg', SCALING)
+        self.all_sprites.append(frog)
 
         while self._keep_playing:
             self._get_inputs()
             self._do_updates()
             self._do_outputs()
+        
+        arcade.run()
 
 
     def _get_inputs(self):
@@ -65,10 +75,12 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        frog_movement = InputService.check_for_input()
+        #frog_movement = InputService.check_for_input()
         
-        if frog_movement is not None:
-            ControlActorsAction.set_movement("frog", frog_movement)
+        #if frog_movement is not None:
+        #    ControlActorsAction.set_movement("frog", frog_movement)
+
+        InputService.on_key_press(InputService, Frog)
 
 
     def _do_updates(self):
@@ -80,7 +92,8 @@ class Director:
         """
         # MoveActorsAction.move_sprites()
 
-        arcade.SpriteList.update()
+        self.all_sprites.update()
+
 
         
     def _do_outputs(self):
@@ -93,4 +106,4 @@ class Director:
         """
         # OutputService.draw_sprites()
 
-        arcade.SpriteList.draw()
+        self.all_sprites.draw()
