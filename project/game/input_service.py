@@ -8,8 +8,10 @@ class InputService(Window):
     Stereotype: 
         Service Provider
     """
+    def __init__(self):
+        super().__init__()
 
-    def on_key_press(self, symbol, frog):
+    def on_key_press(self, frog, symbol = None, modifier = None):
         """Handle user key input.
         
         Args:
