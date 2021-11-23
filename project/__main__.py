@@ -1,8 +1,9 @@
+import arcade
 from game.director import Director
 
 def main():
     game = Director()
-    game.start_game()
+    arcade.run()
 
 if __name__ == "__main__":
     main()

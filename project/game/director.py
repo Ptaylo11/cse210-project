@@ -12,7 +12,7 @@ from game.car import Car
 from game.frog import Frog
 from game.constants import BLOCK_SIZE
 
-class Director:
+class Director(arcade.Window):
     """A code template for a person who directs the game. The responsibility of 
     this class of objects is to control the sequence of play.
     
@@ -30,10 +30,12 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        self._keep_playing = True
-        self.window = arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+
         self.car_list = SpriteList()
         self.all_sprites = SpriteList()
+
+        self.start_game()
 
         
     def start_game(self):
@@ -60,15 +62,8 @@ class Director:
         frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.all_sprites.append(frog)
 
-        while self._keep_playing:
-            self._get_inputs()
-            self._do_updates()
-            self._do_outputs()
-        
-        arcade.run()
 
-
-    def _get_inputs(self):
+    def on_key_press(self, key, modifiers):
         """Gets the inputs at the beginning of each round of play. In this case,
         that means getting the desired direction and moving the snake.
 
@@ -80,10 +75,10 @@ class Director:
         #if frog_movement is not None:
         #    ControlActorsAction.set_movement("frog", frog_movement)
 
-        InputService.on_key_press(InputService, Frog)
+        InputService.on_key_press(InputService, Frog, key, modifiers)
 
 
-    def _do_updates(self):
+    def update(self, delta_time):
         """Updates the important game information for each round of play. In 
         this case, that means checking for a collision and updating the score.
 
@@ -94,16 +89,12 @@ class Director:
 
         self.all_sprites.update()
 
+        for car in self.car_list:
+            car.loop()
+
 
         
-    def _do_outputs(self):
-        """Outputs the important game information for each round of play. In 
-        this case, that means checking if there are stones left and declaring 
-        the winner.
-
-        Args:
-            self (Director): An instance of Director.
-        """
-        # OutputService.draw_sprites()
+    def on_draw(self):
+        arcade.start_render()
 
         self.all_sprites.draw()
