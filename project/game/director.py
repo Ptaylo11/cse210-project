@@ -1,16 +1,11 @@
-from arcade.sprite_list.sprite_list import SpriteList
-from game.control_actors_action import ControlActorsAction
-from game.move_actors_action import MoveActorsAction
-from game.input_service import InputService
-from game.output_service import OutputService
-from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING
+from arcade import SpriteList
+from game.car import Car
+from game.frog import Frog
+from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 
 import random
 import arcade
 
-from game.car import Car
-from game.frog import Frog
-from game.constants import BLOCK_SIZE
 
 class Director(arcade.Window):
     """A code template for a person who directs the game. The responsibility of 
@@ -34,6 +29,8 @@ class Director(arcade.Window):
 
         self.car_list = SpriteList()
         self.all_sprites = SpriteList()
+        self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
+        self.lives = 3
 
         self.start_game()
 
@@ -45,6 +42,7 @@ class Director(arcade.Window):
             self (Director): an instance of Director.
         """
         arcade.set_background_color(arcade.color.WHITE)
+        self.all_sprites.append(self.frog)
 
         for _ in range(2):
             car = Car(
@@ -58,22 +56,28 @@ class Director(arcade.Window):
 
             self.car_list.append(car)
             self.all_sprites.append(car)
-        
-        frog = Frog('project\game\images\\frog.jpeg', SCALING)
-        self.all_sprites.append(frog)
 
+        arcade.run()
+
+        while self._keep_playing:
+            self._do_updates()
+            self._do_outputs()
 
     def on_key_press(self, key, modifiers):
         """Gets the inputs at the beginning of each round of play. In this case,
         that means getting the desired direction and moving the snake.
-
-        Args:
-            self (Director): An instance of Director.
-        """
-        #frog_movement = InputService.check_for_input()
         
-        #if frog_movement is not None:
-        #    ControlActorsAction.set_movement("frog", frog_movement)
+        if symbol == arcade.key.W:
+            self.frog.step("UP")
+
+        elif symbol == arcade.key.S:
+            self.frog.step("DOWN")
+
+        elif symbol == arcade.key.A:
+            self.frog.step("LEFT")
+
+        elif symbol == arcade.key.D:
+            self.frog.step("RIGHT")
 
         InputService.on_key_press(InputService, Frog, key, modifiers)
 
@@ -85,9 +89,23 @@ class Director(arcade.Window):
         Args:
             self (Director): An instance of Director.
         """
-        # MoveActorsAction.move_sprites()
-
         self.all_sprites.update()
+        if self.frog.collides_with_sprite(self.all_sprites):
+
+            self.frog.reset()
+            self.lives -= 1
+
+            if self.lives == 0:
+                self._keep_playing = False
+        
+
+    def _do_outputs(self):
+        """Outputs the important game information for each round of play.
+        In this case, it means 
+
+        Args:
+            self (Director): An instance of Director.
+        """
 
         for car in self.car_list:
             car.loop()
