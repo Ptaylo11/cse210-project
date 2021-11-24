@@ -1,4 +1,3 @@
-from arcade import sprite_list
 from arcade.sprite_list import SpriteList
 from game.car import Car
 from game.frog import Frog
