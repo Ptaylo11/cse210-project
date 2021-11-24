@@ -85,7 +85,7 @@ class Director(arcade.Window):
             self (Director): An instance of Director.
         """
         self.all_sprites.update()
-        if self.frog.collides_with_sprite(sprite_list):
+        if self.frog.collides_with_sprite(self.all_sprites):
 
             self.frog.reset()
             self.lives -= 1
