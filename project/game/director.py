@@ -27,6 +27,7 @@ class Director(arcade.Window):
         """
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
+        self._keep_playing = True
         self.car_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
@@ -51,7 +52,7 @@ class Director(arcade.Window):
                 random.randint(1, SCREEN_WIDTH),
                 random.randint(1, SCREEN_HEIGHT),
                 BLOCK_SIZE * 2,
-                20
+                10
             )
 
             self.car_list.append(car)
@@ -66,20 +67,19 @@ class Director(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Gets the inputs at the beginning of each round of play. In this case,
         that means getting the desired direction and moving the snake.
-        
-        if symbol == arcade.key.W:
+        """
+        if key == arcade.key.W:
             self.frog.step("UP")
 
-        elif symbol == arcade.key.S:
+        elif key == arcade.key.S:
             self.frog.step("DOWN")
 
-        elif symbol == arcade.key.A:
+        elif key == arcade.key.A:
             self.frog.step("LEFT")
 
-        elif symbol == arcade.key.D:
+        elif key == arcade.key.D:
             self.frog.step("RIGHT")
 
-        InputService.on_key_press(InputService, Frog, key, modifiers)
 
 
     def update(self, delta_time):
@@ -90,8 +90,12 @@ class Director(arcade.Window):
             self (Director): An instance of Director.
         """
         self.all_sprites.update()
-        if self.frog.collides_with_sprite(self.all_sprites):
+        
+        for car in self.car_list:
+            car.loop()
 
+        #check_for_collision_with_list returns a list, so we check if the list is empty
+        if (len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0):
             self.frog.reset()
             self.lives -= 1
 
@@ -99,6 +103,9 @@ class Director(arcade.Window):
                 self._keep_playing = False
         
 
+
+    #this function never runs
+    '''
     def _do_outputs(self):
         """Outputs the important game information for each round of play.
         In this case, it means 
@@ -107,9 +114,11 @@ class Director(arcade.Window):
             self (Director): An instance of Director.
         """
 
+        print("test to see if this runs")
+
         for car in self.car_list:
             car.loop()
-
+    '''
 
         
     def on_draw(self):
