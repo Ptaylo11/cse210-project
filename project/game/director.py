@@ -1,4 +1,4 @@
-from arcade.sprite_list import SpriteList
+from arcade import SpriteList
 from game.car import Car
 from game.frog import Frog
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
@@ -95,9 +95,8 @@ class Director(arcade.Window):
         
 
     def _do_outputs(self):
-        """Outputs the important game information for each round of play. In 
-        this case, that means checking if there are stones left and declaring 
-        the winner.
+        """Outputs the important game information for each round of play.
+        In this case, it means 
 
         Args:
             self (Director): An instance of Director.

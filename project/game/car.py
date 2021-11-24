@@ -1,4 +1,5 @@
 import arcade
+import random
 from game.constants import BLOCK_SIZE, SCREEN_WIDTH
 
 class Car(arcade.Sprite):
