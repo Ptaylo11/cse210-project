@@ -11,7 +11,7 @@ class InputService(Window):
     def __init__(self):
         super().__init__()
 
-    def on_key_press(self, frog, symbol = None, modifier = None):
+    def on_key_press(self, frog, symbol, modifier):
         """Handle user key input.
         
         Args:
@@ -19,13 +19,13 @@ class InputService(Window):
             frog (Sprite): the frog sprite.
         """
         if symbol == arcade.key.W:
-            frog.change_y = constants.BLOCK_SIZE
+            frog.step("UP")
 
         if symbol == arcade.key.S:
-            frog.change_y = constants.BLOCK_SIZE * -1
+            frog.step("DOWN")
 
         if symbol == arcade.key.A:
-            frog.change_x = constants.BLOCK_SIZE * -1
+            frog.step("LEFT")
 
         if symbol == arcade.key.D:
-            frog.change_x = constants.BLOCK_SIZE
+            frog.step("RIGHT")
