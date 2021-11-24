@@ -25,12 +25,14 @@ class Director(arcade.Window):
         Args:
             self (Director): an instance of Director.
         """
-        self._keep_playing = True
-        self.window = arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+
         self.car_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.lives = 3
+
+        self.start_game()
 
         
     def start_game(self):
@@ -61,8 +63,9 @@ class Director(arcade.Window):
             self._do_updates()
             self._do_outputs()
 
-    
-    def on_key_press(self, symbol):
+    def on_key_press(self, key, modifiers):
+        """Gets the inputs at the beginning of each round of play. In this case,
+        that means getting the desired direction and moving the snake.
         
         if symbol == arcade.key.W:
             self.frog.step("UP")
@@ -76,8 +79,10 @@ class Director(arcade.Window):
         elif symbol == arcade.key.D:
             self.frog.step("RIGHT")
 
+        InputService.on_key_press(InputService, Frog, key, modifiers)
 
-    def _do_updates(self):
+
+    def update(self, delta_time):
         """Updates the important game information for each round of play. In 
         this case, that means checking for a collision and updating the score.
 
@@ -101,5 +106,13 @@ class Director(arcade.Window):
         Args:
             self (Director): An instance of Director.
         """
+
+        for car in self.car_list:
+            car.loop()
+
+
+        
+    def on_draw(self):
+        arcade.start_render()
 
         self.all_sprites.draw()
