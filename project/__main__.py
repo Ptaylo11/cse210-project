@@ -1,7 +1,8 @@
 from game.director import Director
 
 def main():
-    Director()
+    game = Director()
+    game.start_game()
 
 if __name__ == "__main__":
     main()
