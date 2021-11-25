@@ -50,9 +50,9 @@ class Director(arcade.Window):
                 "project\game\images\car.png",
                 SCALING,
                 random.randint(1, SCREEN_WIDTH),
-                random.randint(1, SCREEN_HEIGHT),
+                random.randint(1, 15 * BLOCK_SIZE),
                 BLOCK_SIZE * 2,
-                10
+                5
             )
 
             self.car_list.append(car)
