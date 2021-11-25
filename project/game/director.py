@@ -33,8 +33,6 @@ class Director(arcade.Window):
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.lives = 3
 
-        self.start_game()
-
         
     def start_game(self):
         """Starts the game loop to control the sequence of play.
