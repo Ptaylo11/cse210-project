@@ -1,5 +1,5 @@
 import arcade
-from game.constants import BLOCK_SIZE
+from game.constants import BLOCK_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Frog(arcade.Sprite):
 
@@ -24,6 +24,15 @@ class Frog(arcade.Sprite):
         elif direction == "DOWN":
             self.center_y -= BLOCK_SIZE
 
+        if self.left < 0:
+            self.left = 0
+        if self.right > SCREEN_WIDTH:
+            self.right = SCREEN_WIDTH
+        if self.top <= 0: #This specific line is temporary to keep the frog from going too far off the screen; we can update it later to
+                          #account for screen scrolling/generating a new level
+            self.top = 0
+        if self.bottom >= SCREEN_HEIGHT:
+            self.bottom = SCREEN_HEIGHT
 
     def die(self):
         """ effectively destroys the frog sprite.
