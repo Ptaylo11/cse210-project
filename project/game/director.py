@@ -20,6 +20,7 @@ class Director(arcade.Window):
         window: (class) the arcade screen window
     """
 
+
     def __init__(self):
         """The class constructor.
         
@@ -93,7 +94,6 @@ class Director(arcade.Window):
             self.frog.step("RIGHT")
 
 
-
     def on_update(self, delta_time):
         """Updates the important game information for each round of play. In 
         this case, that means checking for a collision and updating the score.
@@ -110,12 +110,27 @@ class Director(arcade.Window):
         
 
         #check_for_collision_with_list returns a list, so we check if the list is empty
-        if (len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0):
-            self.frog.reset()
-            self.lives -= 1
-
-            if self.lives == 0:
+        if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
+            
+            lives = self.scoreboard.remove_life_return_total()
+            
+            if lives == 0:
                 self._keep_playing = False
+                self.frog.die()
+            else:
+                self.frog.reset()
+
+        if self._keep_playing:
+            text = self.scoreboard.calculate_scoreboard()
+        else:
+            text = "game over!"
+
+        arcade.draw_text(
+            text,
+            5,
+            SCREEN_HEIGHT - 5,
+            arcade.color.BLACK
+        )
 
         #checks for if riding log or not, and changes frog's change_x to match log speed if true
         log_collision = False
@@ -126,24 +141,6 @@ class Director(arcade.Window):
         
         if not log_collision:
             self.frog.change_x = 0
-        
-
-
-    #this function never runs
-    '''
-    def _do_outputs(self):
-        """Outputs the important game information for each round of play.
-        In this case, it means 
-
-        Args:
-            self (Director): An instance of Director.
-        """
-
-        print("test to see if this runs")
-
-        for car in self.car_list:
-            car.loop()
-    '''
 
         
     def on_draw(self):
