@@ -1,6 +1,7 @@
 from arcade import SpriteList
 from game.car import Car
 from game.frog import Frog
+from game.scoreboard import Scoreboard
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 
 import random
@@ -31,7 +32,7 @@ class Director(arcade.Window):
         self.car_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
-        self.lives = 3
+        self.scoreboard = Scoreboard()
 
         
     def start_game(self):
@@ -48,7 +49,7 @@ class Director(arcade.Window):
                 "project\game\images\car.png",
                 SCALING,
                 random.randint(1, SCREEN_WIDTH),
-                random.randint(1, 15 * BLOCK_SIZE),
+                random.randint(1, 15) * BLOCK_SIZE,
                 BLOCK_SIZE * 2,
                 5
             )
@@ -58,9 +59,6 @@ class Director(arcade.Window):
 
         arcade.run()
 
-        while self._keep_playing:
-            self._do_updates()
-            self._do_outputs()
 
     def on_key_press(self, key, modifiers):
         """Gets the inputs at the beginning of each round of play. In this case,
@@ -80,7 +78,7 @@ class Director(arcade.Window):
 
 
 
-    def update(self, delta_time):
+    def on_update(self, delta_time):
         """Updates the important game information for each round of play. In 
         this case, that means checking for a collision and updating the score.
 
