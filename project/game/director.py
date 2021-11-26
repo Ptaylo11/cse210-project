@@ -2,6 +2,7 @@ from arcade import SpriteList
 from game.car import Car
 from game.frog import Frog
 from game.scoreboard import Scoreboard
+from game.row import Row
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 
 import random
@@ -17,7 +18,12 @@ class Director(arcade.Window):
 
     Attributes:
         keep_playing: (Bool) whether the game continues or not
-        window: (class) the arcade screen window
+        car_list: instance of SpriteList
+        log_list: instance of SpriteList
+        all_sprites: instance of SpriteList
+        frog: instance of Frog
+        scoreboard: instance of Scoreboard
+        gameboard: array of instances of Row
     """
 
 
@@ -32,10 +38,11 @@ class Director(arcade.Window):
         self._keep_playing = True
         self.car_list = SpriteList()
         self.log_list = SpriteList()
+        self.water_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.scoreboard = Scoreboard()
-        self.lives = 3
+        self.gameboard = []
 
         
     def start_game(self):
@@ -46,6 +53,7 @@ class Director(arcade.Window):
         """
         arcade.set_background_color(arcade.color.WHITE)
 
+        """
         for _ in range(2):
             car = Car(
                 "project\game\images\car.png",
@@ -71,6 +79,26 @@ class Director(arcade.Window):
 
             self.log_list.append(log)
             self.all_sprites.append(log)
+        """
+
+        for i in range(3):
+            self.gameboard.append(
+                Row(self.car_list, self.log_list, self.water_list, self.all_sprites, "grass")
+            )
+
+            if i > 1:
+                for row in self.gameboard:
+                    row.step_down()
+
+        for i in range(13):
+            self.gameboard.append(
+                Row(self.car_list, self.log_list, self.water_list, self.all_sprites)
+            )
+
+            for row in self.gameboard:
+                row.step_down()
+                if row.background.center_y < 0:
+                    row.remove_from_sprite_lists()
 
         
         self.all_sprites.append(self.frog)
