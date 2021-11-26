@@ -120,17 +120,7 @@ class Director(arcade.Window):
             else:
                 self.frog.reset()
 
-        if self._keep_playing:
-            text = self.scoreboard.calculate_scoreboard()
-        else:
-            text = "game over!"
 
-        arcade.draw_text(
-            text,
-            5,
-            SCREEN_HEIGHT - 5,
-            arcade.color.BLACK
-        )
 
         #checks for if riding log or not, and changes frog's change_x to match log speed if true
         log_collision = False
@@ -147,3 +137,16 @@ class Director(arcade.Window):
         arcade.start_render()
 
         self.all_sprites.draw()
+
+        #score display
+        if self._keep_playing:
+            text = self.scoreboard.calculate_scoreboard()
+        else:
+            text = "game over!"
+
+        arcade.draw_text(
+            text,
+            5,
+            SCREEN_HEIGHT - 12,
+            arcade.color.BLACK
+        )
