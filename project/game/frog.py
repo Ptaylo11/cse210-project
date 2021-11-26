@@ -10,8 +10,8 @@ class Frog(arcade.Sprite):
 
 
     def reset(self):
-        self.center_x = BLOCK_SIZE * 8
-        self.center_y = BLOCK_SIZE * 8 + BLOCK_SIZE * .5
+        self.center_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
+        self.center_y = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
 
 
     def step(self, direction):
