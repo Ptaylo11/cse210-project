@@ -30,9 +30,11 @@ class Director(arcade.Window):
 
         self._keep_playing = True
         self.car_list = SpriteList()
+        self.log_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.scoreboard = Scoreboard()
+        self.lives = 3
 
         
     def start_game(self):
@@ -42,7 +44,6 @@ class Director(arcade.Window):
             self (Director): an instance of Director.
         """
         arcade.set_background_color(arcade.color.WHITE)
-        self.all_sprites.append(self.frog)
 
         for _ in range(2):
             car = Car(
@@ -57,6 +58,21 @@ class Director(arcade.Window):
             self.car_list.append(car)
             self.all_sprites.append(car)
 
+        for _ in range(2):
+            log = Car(
+                "project\game\images\log.png",
+                SCALING,
+                random.randint(1, SCREEN_WIDTH),
+                random.randint(1, 15) * BLOCK_SIZE,
+                BLOCK_SIZE * 4,
+                3
+            )
+
+            self.log_list.append(log)
+            self.all_sprites.append(log)
+
+        
+        self.all_sprites.append(self.frog)
         arcade.run()
 
 
@@ -89,6 +105,9 @@ class Director(arcade.Window):
         
         for car in self.car_list:
             car.loop()
+        for log in self.log_list:
+            log.loop()
+        
 
         #check_for_collision_with_list returns a list, so we check if the list is empty
         if (len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0):
@@ -97,6 +116,16 @@ class Director(arcade.Window):
 
             if self.lives == 0:
                 self._keep_playing = False
+
+        #checks for if riding log or not, and changes frog's change_x to match log speed if true
+        log_collision = False
+        for log in self.log_list:
+            if self.frog.collides_with_sprite(log):
+                self.frog.change_x = log.change_x
+                log_collision = True
+        
+        if not log_collision:
+            self.frog.change_x = 0
         
 
 
