@@ -86,7 +86,7 @@ class Director(arcade.Window):
                 Row(self.car_list, self.log_list, self.water_list, self.all_sprites, "grass")
             )
 
-            if i > 1:
+            if i > 0:
                 for row in self.gameboard:
                     row.step_down()
 

@@ -3,7 +3,7 @@ import random
 from game.constants import BLOCK_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCALING
 
 img_dict = {
-    "grass": "",
+    "grass": "project/game/images/car.png", # there needs to be something here for the game to run.. it will be blank eventually
     "road": "project/game/images/car.png",
     "water": "project/game/images/log.png"
 }
@@ -24,7 +24,13 @@ class Mover(arcade.Sprite):
         self.type = type
         self.center_x = random.randint(0, SCREEN_WIDTH)
         self.center_y = SCREEN_HEIGHT - (BLOCK_SIZE / 2)
-        self.change_x = random.randint(3, 5)
+        if type == "road":
+            self.change_x = random.randint(3, 5)
+        else:
+            self.change_x = random.randint(1, 3)
+
+        if random.randint(0, 1) == 1:
+            self.change_x *= -1
 
 
     def loop(self):
