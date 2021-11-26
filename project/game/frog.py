@@ -25,5 +25,11 @@ class Frog(arcade.Sprite):
             self.center_y -= BLOCK_SIZE
 
 
-    def die():
-        pass    # removes frog from the window
+    def die(self):
+        """ effectively destroys the frog sprite.
+        A new one will only be made when the game is reset.
+        """
+                            # This is only temporary!!
+                            # It will need to change to be able to start over within the program
+
+        self.remove_from_sprite_lists()
