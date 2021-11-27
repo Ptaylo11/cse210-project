@@ -5,13 +5,15 @@ class Frog(arcade.Sprite):
 
     def __init__(self, img, scaling):
         super().__init__(img, scaling, 0, 0, BLOCK_SIZE, BLOCK_SIZE)
+        self._starting_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
+        self._starting_y = BLOCK_SIZE * .5
 
         self.reset()
 
 
     def reset(self):
-        self.center_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
-        self.center_y = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
+        self.center_x = self._starting_x
+        self.center_y = self._starting_y
 
 
     def step(self, direction):
