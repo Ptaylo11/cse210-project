@@ -156,6 +156,11 @@ class Director(arcade.Window):
             if self.frog.collides_with_sprite(log):
                 self.frog.change_x = log.change_x
                 log_collision = True
+
+                if self.frog.left < 0:
+                    self.frog.left = 0
+                if self.frog.right > SCREEN_WIDTH:
+                    self.frog.right = SCREEN_WIDTH
         
         if not log_collision:
             self.frog.change_x = 0
