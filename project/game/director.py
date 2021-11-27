@@ -160,10 +160,26 @@ class Director(arcade.Window):
         if not log_collision:
             self.frog.change_x = 0
 
+        #checks for water collision while not riding log
+        water_collision = False
+        for water in self.water_list:
+            if self.frog.collides_with_sprite(water):
+                water_collision = True
+
+        if water_collision and not log_collision:
+            lives = self.scoreboard.remove_life_return_total()
+            
+            if lives == 0:
+                self._keep_playing = False
+                self.frog.die()
+            else:
+                self.frog.reset()
+
         
     def on_draw(self):
         arcade.start_render()
 
+        self.water_list.draw()
         self.all_sprites.draw()
 
         #score display
