@@ -39,6 +39,7 @@ class Director(arcade.Window):
         self.car_list = SpriteList()
         self.log_list = SpriteList()
         self.water_list = SpriteList()
+        self.road_and_grass_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
         self.scoreboard = Scoreboard()
@@ -83,7 +84,7 @@ class Director(arcade.Window):
 
         for i in range(3):
             self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.all_sprites, "grass")
+                Row(self.car_list, self.log_list, self.water_list, self.road_and_grass_list, self.all_sprites, "grass")
             )
 
             if i > 0:
@@ -185,6 +186,7 @@ class Director(arcade.Window):
         arcade.start_render()
 
         self.water_list.draw()
+        self.road_and_grass_list.draw()
         self.all_sprites.draw()
 
         #score display
