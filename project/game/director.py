@@ -93,7 +93,7 @@ class Director(arcade.Window):
 
         for i in range(13):
             self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.all_sprites)
+                Row(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
             )
 
             for row in self.gameboard:
