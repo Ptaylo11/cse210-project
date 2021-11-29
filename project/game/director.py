@@ -116,16 +116,16 @@ class Director(arcade.Window):
             self._paused = not self._paused
 
         if not self._paused:
-            if key == arcade.key.W:
+            if key == arcade.key.W or key == arcade.key.UP:
                 self.frog.step("UP")
 
-            elif key == arcade.key.S:
+            elif key == arcade.key.S or key == arcade.key.DOWN:
                 self.frog.step("DOWN")
 
-            elif key == arcade.key.A:
+            elif key == arcade.key.A or key == arcade.key.LEFT:
                 self.frog.step("LEFT")
 
-            elif key == arcade.key.D:
+            elif key == arcade.key.D or key == arcade.key.RIGHT:
                 self.frog.step("RIGHT")
 
 
@@ -138,50 +138,50 @@ class Director(arcade.Window):
         """
         if not self._paused:
             self.all_sprites.update()
-            
+
             for car in self.car_list:
                 car.loop()
             for log in self.log_list:
                 log.loop()
-            
-    
+
+
             #check_for_collision_with_list returns a list, so we check if the list is empty
             if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
-                
+
                 lives = self.scoreboard.remove_life_return_total()
-                
+
                 if lives == 0:
                     self._keep_playing = False
                     self.frog.die()
                 else:
                     self.frog.reset()
-    
-    
-    
+
+
+
             #checks for if riding log or not, and changes frog's change_x to match log speed if true
             log_collision = False
             for log in self.log_list:
                 if self.frog.collides_with_sprite(log):
                     self.frog.change_x = log.change_x
                     log_collision = True
-    
+
                     if self.frog.left < 0:
                         self.frog.left = 0
                     if self.frog.right > SCREEN_WIDTH:
                         self.frog.right = SCREEN_WIDTH
-            
+
             if not log_collision:
                 self.frog.change_x = 0
-    
+
             #checks for water collision while not riding log
             water_collision = False
             for water in self.water_list:
                 if self.frog.collides_with_sprite(water):
                     water_collision = True
-    
+
             if water_collision and not log_collision:
                 lives = self.scoreboard.remove_life_return_total()
-                
+
                 if lives == 0:
                     self._keep_playing = False
                     self.frog.die()
