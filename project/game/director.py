@@ -1,4 +1,5 @@
 from arcade import SpriteList
+from arcade.key import ESCAPE
 from game.car import Car
 from game.frog import Frog
 from game.scoreboard import Scoreboard
@@ -36,6 +37,7 @@ class Director(arcade.Window):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
         self._keep_playing = True
+        self._paused = False
         self.car_list = SpriteList()
         self.log_list = SpriteList()
         self.water_list = SpriteList()
@@ -110,17 +112,21 @@ class Director(arcade.Window):
         """Gets the inputs at the beginning of each round of play. In this case,
         that means getting the desired direction and moving the snake.
         """
-        if key == arcade.key.W:
-            self.frog.step("UP")
+        if key == arcade.key.ESCAPE:
+            self._paused = not self._paused
 
-        elif key == arcade.key.S:
-            self.frog.step("DOWN")
+        if not self._paused:
+            if key == arcade.key.W or key == arcade.key.UP:
+                self.frog.step("UP")
 
-        elif key == arcade.key.A:
-            self.frog.step("LEFT")
+            elif key == arcade.key.S or key == arcade.key.DOWN:
+                self.frog.step("DOWN")
 
-        elif key == arcade.key.D:
-            self.frog.step("RIGHT")
+            elif key == arcade.key.A or key == arcade.key.LEFT:
+                self.frog.step("LEFT")
+
+            elif key == arcade.key.D or key == arcade.key.RIGHT:
+                self.frog.step("RIGHT")
 
 
     def on_update(self, delta_time):
@@ -130,56 +136,57 @@ class Director(arcade.Window):
         Args:
             self (Director): An instance of Director.
         """
-        self.all_sprites.update()
-        
-        for car in self.car_list:
-            car.loop()
-        for log in self.log_list:
-            log.loop()
-        
+        if not self._paused:
+            self.all_sprites.update()
 
-        #check_for_collision_with_list returns a list, so we check if the list is empty
-        if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
-            
-            lives = self.scoreboard.remove_life_return_total()
-            
-            if lives == 0:
-                self._keep_playing = False
-                self.frog.die()
-            else:
-                self.frog.reset()
+            for car in self.car_list:
+                car.loop()
+            for log in self.log_list:
+                log.loop()
 
 
+            #check_for_collision_with_list returns a list, so we check if the list is empty
+            if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
 
-        #checks for if riding log or not, and changes frog's change_x to match log speed if true
-        log_collision = False
-        for log in self.log_list:
-            if self.frog.collides_with_sprite(log):
-                self.frog.change_x = log.change_x
-                log_collision = True
+                lives = self.scoreboard.remove_life_return_total()
 
-                if self.frog.left < 0:
-                    self.frog.left = 0
-                if self.frog.right > SCREEN_WIDTH:
-                    self.frog.right = SCREEN_WIDTH
-        
-        if not log_collision:
-            self.frog.change_x = 0
+                if lives == 0:
+                    self._keep_playing = False
+                    self.frog.die()
+                else:
+                    self.frog.reset()
 
-        #checks for water collision while not riding log
-        water_collision = False
-        for water in self.water_list:
-            if self.frog.collides_with_sprite(water):
-                water_collision = True
 
-        if water_collision and not log_collision:
-            lives = self.scoreboard.remove_life_return_total()
-            
-            if lives == 0:
-                self._keep_playing = False
-                self.frog.die()
-            else:
-                self.frog.reset()
+
+            #checks for if riding log or not, and changes frog's change_x to match log speed if true
+            log_collision = False
+            for log in self.log_list:
+                if self.frog.collides_with_sprite(log):
+                    self.frog.change_x = log.change_x
+                    log_collision = True
+
+                    if self.frog.left < 0:
+                        self.frog.left = 0
+                    if self.frog.right > SCREEN_WIDTH:
+                        self.frog.right = SCREEN_WIDTH
+
+            if not log_collision:
+                self.frog.change_x = 0
+
+            #checks for water collision while not riding log
+            water_collision = False
+            for water in self.water_list:
+                if self.frog.collides_with_sprite(water):
+                    water_collision = True
+
+            if water_collision and not log_collision:
+                lives = self.scoreboard.remove_life_return_total()
+
+                if lives == 0:
+                    self._keep_playing = False
+                    self.frog.die()
+                else:
+                    self.frog.reset()
 
         
     def on_draw(self):
