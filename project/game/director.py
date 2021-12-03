@@ -208,3 +208,9 @@ class Director(arcade.Window):
             SCREEN_HEIGHT - 12,
             arcade.color.BLACK
         )
+
+    def end_screen(self, screen):
+        screen = (SCREEN_WIDTH, SCREEN_HEIGHT)
+        arcade.draw(
+            screen.fill(0, 0, 0)
+        )
