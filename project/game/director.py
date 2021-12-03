@@ -43,7 +43,7 @@ class Director(arcade.Window):
         self.water_list = SpriteList()
         self.road_and_grass_list = SpriteList()
         self.all_sprites = SpriteList()
-        self.frog = Frog('project\game\images\\frog.jpeg', SCALING)
+        self.frog = Frog('project\game\images\\frog.png', SCALING)
         self.scoreboard = Scoreboard()
         self.gameboard = []
 
