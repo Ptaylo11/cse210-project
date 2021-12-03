@@ -2,8 +2,8 @@ import arcade
 from game.constants import BLOCK_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCALING
 
 img_dict = {
-    "grass": "project/game/images/grass.jpg",
-    "road": "project/game/images/street.jpg",
+    "grass": "project/game/images/grass.png",
+    "road": "project/game/images/road.png",
     "water": "project/game/images/water.jpeg"
 }
 
