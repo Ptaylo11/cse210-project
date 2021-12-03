@@ -19,7 +19,7 @@ class Mover(arcade.Sprite):
         """ The class constructor.
         """
 
-        super().__init__(img_dict[type], SCALING, 0, 0, BLOCK_SIZE * random.randint(2, 4), BLOCK_SIZE)
+        super().__init__(filename = img_dict[type], scale = SCALING, image_x = 0, image_y = 0, image_width = BLOCK_SIZE * random.randint(2, 4), image_height = BLOCK_SIZE, flipped_horizontally = True)
 
         self.type = type
         self.center_x = random.randint(0, SCREEN_WIDTH)
@@ -31,6 +31,7 @@ class Mover(arcade.Sprite):
 
         if random.randint(0, 1) == 1:
             self.change_x *= -1
+            self._set_angle(180)
 
 
     def loop(self):
