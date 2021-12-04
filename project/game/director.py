@@ -41,6 +41,7 @@ class Director(arcade.Window):
         self.road_and_grass_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.png', SCALING)
+        self.frog_list = SpriteList()
         self.scoreboard = Scoreboard()
         self.gameboard = Gameboard()
         self.collision_handler = Collision_Handler()
@@ -56,6 +57,7 @@ class Director(arcade.Window):
 
         self.gameboard.new_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
         self.all_sprites.append(self.frog)
+        self.frog_list.append(self.frog)
 
         arcade.run()
 
@@ -113,6 +115,7 @@ class Director(arcade.Window):
         self.water_list.draw()
         self.road_and_grass_list.draw()
         self.all_sprites.draw()
+        self.frog_list.draw()
 
         #score display
         if self._keep_playing:
