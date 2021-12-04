@@ -4,6 +4,7 @@ from game.car import Car
 from game.frog import Frog
 from game.scoreboard import Scoreboard
 from game.row import Row
+from game.collision_handler import Collision_Handler
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 
 import random
@@ -46,6 +47,7 @@ class Director(arcade.Window):
         self.frog = Frog('project\game\images\\frog.png', SCALING)
         self.scoreboard = Scoreboard()
         self.gameboard = []
+        self.collision_handler = Collision_Handler()
 
         
     def start_game(self):
@@ -144,49 +146,9 @@ class Director(arcade.Window):
             for log in self.log_list:
                 log.loop()
 
-
-            #check_for_collision_with_list returns a list, so we check if the list is empty
-            if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
-
-                lives = self.scoreboard.remove_life_return_total()
-
-                if lives == 0:
-                    self._keep_playing = False
-                    self.frog.die()
-                else:
-                    self.frog.reset()
-
-
-
-            #checks for if riding log or not, and changes frog's change_x to match log speed if true
-            log_collision = False
-            for log in self.log_list:
-                if self.frog.collides_with_sprite(log):
-                    self.frog.change_x = log.change_x
-                    log_collision = True
-
-                    if self.frog.left < 0:
-                        self.frog.left = 0
-                    if self.frog.right > SCREEN_WIDTH:
-                        self.frog.right = SCREEN_WIDTH
-
-            if not log_collision:
-                self.frog.change_x = 0
-
-            #checks for water collision while not riding log
-            water_collision = False
-            for water in self.water_list:
-                if self.frog.collides_with_sprite(water):
-                    water_collision = True
-
-            if water_collision and not log_collision:
-                lives = self.scoreboard.remove_life_return_total()
-
-                if lives == 0:
-                    self._keep_playing = False
-                    self.frog.die()
-                else:
-                    self.frog.reset()
+            self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard)
+            self.collision_handler.check_log_collision(self.frog, self.log_list)
+            self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard)
 
         
     def on_draw(self):
