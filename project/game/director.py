@@ -77,6 +77,8 @@ class Director(arcade.Window):
             arcade.key.W, arcade.key.S, arcade.key.A, arcade.key.D,
             arcade.key.UP, arcade.key.DOWN, arcade.key.LEFT, arcade.key.RIGHT)):
             self._game_over = False
+            self.frog.reset()
+            self.scoreboard.reset()
 
         if not self._paused:
             if key == arcade.key.W or key == arcade.key.UP:
