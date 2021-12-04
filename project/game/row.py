@@ -44,3 +44,8 @@ class Row:
 
         self.background.step_down()
         self.mover.step_down()
+
+        # This handles rows that fall below the screen
+        if self.background.center_y < 0:
+            self.background.remove_from_sprite_lists()
+            self.mover.remove_from_sprite_lists()

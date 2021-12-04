@@ -1,12 +1,8 @@
 from arcade import SpriteList
-from arcade.key import ESCAPE
-from game.car import Car
 from game.frog import Frog
 from game.scoreboard import Scoreboard
-from game.row import Row
-from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
-
-import random
+from game.gameboard import Gameboard
+from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING
 import arcade
 
 
@@ -45,7 +41,7 @@ class Director(arcade.Window):
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.png', SCALING)
         self.scoreboard = Scoreboard()
-        self.gameboard = []
+        self.gameboard = Gameboard()
 
         
     def start_game(self):
@@ -56,55 +52,9 @@ class Director(arcade.Window):
         """
         arcade.set_background_color(arcade.color.WHITE)
 
-        """
-        for _ in range(2):
-            car = Car(
-                "project\game\images\car.png",
-                SCALING,
-                random.randint(1, SCREEN_WIDTH),
-                random.randint(1, 15) * BLOCK_SIZE,
-                BLOCK_SIZE * 2,
-                5
-            )
-
-            self.car_list.append(car)
-            self.all_sprites.append(car)
-
-        for _ in range(2):
-            log = Car(
-                "project\game\images\log.png",
-                SCALING,
-                random.randint(1, SCREEN_WIDTH),
-                random.randint(1, 15) * BLOCK_SIZE,
-                BLOCK_SIZE * 4,
-                3
-            )
-
-            self.log_list.append(log)
-            self.all_sprites.append(log)
-        """
-
-        for i in range(3):
-            self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.road_and_grass_list, self.all_sprites, "grass")
-            )
-
-            if i > 0:
-                for row in self.gameboard:
-                    row.step_down()
-
-        for i in range(13):
-            self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
-            )
-
-            for row in self.gameboard:
-                row.step_down()
-                if row.background.center_y < 0:
-                    row.remove_from_sprite_lists()
-
-        
+        self.gameboard.new_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
         self.all_sprites.append(self.frog)
+
         arcade.run()
 
 
