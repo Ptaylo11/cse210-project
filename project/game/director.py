@@ -110,15 +110,15 @@ class Director(arcade.Window):
                 for log in self.log_list:
                     log.loop()
 
-                self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard, self._game_over)
+                self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard)#, self._game_over)
                 self.collision_handler.check_log_collision(self.frog, self.log_list)
-                self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard, self._game_over)
+                self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard)#, self._game_over)
 
                 # Adds points and resets screen when the frog reaches the top block
                 if self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE):
                     self.frog.reset_y()
                     self.gameboard.refresh_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
-                    self.scoreboard.add_points_and_return(100)
+                    self.scoreboard.add_points(100)
 
                 if self.scoreboard.get_lives() == 0:
                     self._game_over = True
