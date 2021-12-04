@@ -19,6 +19,10 @@ class Frog(arcade.Sprite):
         self.change_x = 0
         self._state = "NORMAL"
 
+    
+    def reset_y(self):
+        self.center_y = self._starting_y
+
 
     def step(self, direction):
         if direction == "LEFT":
