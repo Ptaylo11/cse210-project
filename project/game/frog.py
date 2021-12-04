@@ -8,6 +8,8 @@ class Frog(arcade.Sprite):
         self._starting_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
         self._starting_y = BLOCK_SIZE * .5
         self.sound_die = arcade.load_sound('./resources/sounds/gameover2.wav')
+        self._STATES_LIST = ["NORMAL", "LOG", "DEAD"]
+        self._state = None
 
         self.reset()
 
@@ -15,17 +17,27 @@ class Frog(arcade.Sprite):
     def reset(self):
         self.center_x = self._starting_x
         self.center_y = self._starting_y
+        self.change_x = 0
+        self._state = "NORMAL"
+
+    
+    def reset_y(self):
+        self.center_y = self._starting_y
 
 
     def step(self, direction):
         if direction == "LEFT":
             self.center_x -= BLOCK_SIZE
+            self._set_angle(90)
         elif direction == "RIGHT":
             self.center_x += BLOCK_SIZE
+            self._set_angle(-90)
         elif direction == "UP":
             self.center_y += BLOCK_SIZE
+            self._set_angle(0)
         elif direction == "DOWN":
             self.center_y -= BLOCK_SIZE
+            self._set_angle(180)
 
         if self.left < 0:
             self.left = 0
@@ -44,5 +56,15 @@ class Frog(arcade.Sprite):
                             # This is only temporary!!
                             # It will need to change to be able to start over within the program
 
+
         arcade.play_sound(self.sound_die)
         self.remove_from_sprite_lists()
+
+    def set_state(self, new_state="NORMAL"):
+        if new_state in self._STATES_LIST:
+            self._state = new_state
+        else:
+            print("Error: Not a valid state")
+    
+    def get_state(self):
+        return self._state

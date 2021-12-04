@@ -3,7 +3,7 @@ import random
 from game.constants import BLOCK_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCALING
 
 img_dict = {
-    "grass": "project/game/images/car.png", # there needs to be something here for the game to run.. it will be blank eventually
+    "grass": "project/game/images/car.png", # there needs to be something here for the game to run.. it will be blank during the game
     "road": "project/game/images/car.png",
     "water": "project/game/images/log.png"
 }

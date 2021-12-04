@@ -1,12 +1,9 @@
+from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 from arcade import SpriteList
-from arcade.key import ESCAPE
-from game.car import Car
 from game.frog import Frog
 from game.scoreboard import Scoreboard
-from game.row import Row
-from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
-
-import random
+from game.gameboard import Gameboard
+from game.collision_handler import Collision_Handler
 import arcade
 
 
@@ -18,13 +15,17 @@ class Director(arcade.Window):
         Controller
 
     Attributes:
-        keep_playing: (Bool) whether the game continues or not
+        keep_playing: (Bool)
+        paused: (Bool)
         car_list: instance of SpriteList
         log_list: instance of SpriteList
+        water_list: instance of Spritelist
+        road_and_grass_list: instance of Spritelist
         all_sprites: instance of SpriteList
         frog: instance of Frog
         scoreboard: instance of Scoreboard
-        gameboard: array of instances of Row
+        gameboard: instance of Gameboard
+        collision handler: instance of Collision Handler
     """
 
 
@@ -36,7 +37,7 @@ class Director(arcade.Window):
         """
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
-        self._keep_playing = True
+        self._game_over = False
         self._paused = False
         self.car_list = SpriteList()
         self.log_list = SpriteList()
@@ -44,8 +45,10 @@ class Director(arcade.Window):
         self.road_and_grass_list = SpriteList()
         self.all_sprites = SpriteList()
         self.frog = Frog('project\game\images\\frog.png', SCALING)
+        self.frog_list = SpriteList()
         self.scoreboard = Scoreboard()
-        self.gameboard = []
+        self.gameboard = Gameboard()
+        self.collision_handler = Collision_Handler()
 
         #Loads song to be played when game starts : Song credit to @shiru8bit
         self.sound_song = arcade.load_sound('project\game\sounds\\a_little_journey.wav')
@@ -59,56 +62,10 @@ class Director(arcade.Window):
         """
         arcade.set_background_color(arcade.color.WHITE)
 
-        """
-        for _ in range(2):
-            car = Car(
-                "project\game\images\car.png",
-                SCALING,
-                random.randint(1, SCREEN_WIDTH),
-                random.randint(1, 15) * BLOCK_SIZE,
-                BLOCK_SIZE * 2,
-                5
-            )
-
-            self.car_list.append(car)
-            self.all_sprites.append(car)
-
-        for _ in range(2):
-            log = Car(
-                "project\game\images\log.png",
-                SCALING,
-                random.randint(1, SCREEN_WIDTH),
-                random.randint(1, 15) * BLOCK_SIZE,
-                BLOCK_SIZE * 4,
-                3
-            )
-
-            self.log_list.append(log)
-            self.all_sprites.append(log)
-        """
-
-        for i in range(3):
-            self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.road_and_grass_list, self.all_sprites, "grass")
-            )
-
-            if i > 0:
-                for row in self.gameboard:
-                    row.step_down()
-
-        for i in range(13):
-            self.gameboard.append(
-                Row(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
-            )
-
-            for row in self.gameboard:
-                row.step_down()
-                if row.background.center_y < 0:
-                    row.remove_from_sprite_lists()
-
-        
+        self.gameboard.new_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
         self.all_sprites.append(self.frog)
         arcade.play_sound(self.sound_song, 1, -1, True)
+        self.frog_list.append(self.frog)
         arcade.run()
 
 
@@ -118,6 +75,13 @@ class Director(arcade.Window):
         """
         if key == arcade.key.ESCAPE:
             self._paused = not self._paused
+
+        if self._game_over and (key in (
+            arcade.key.W, arcade.key.S, arcade.key.A, arcade.key.D,
+            arcade.key.UP, arcade.key.DOWN, arcade.key.LEFT, arcade.key.RIGHT)):
+            self._game_over = False
+            self.frog.reset()
+            self.scoreboard.reset()
 
         if not self._paused:
             if key == arcade.key.W or key == arcade.key.UP:
@@ -140,75 +104,55 @@ class Director(arcade.Window):
         Args:
             self (Director): An instance of Director.
         """
-        if not self._paused:
-            self.all_sprites.update()
+        if not self._game_over:
+            if not self._paused:
+                self.all_sprites.update()
 
-            for car in self.car_list:
-                car.loop()
-            for log in self.log_list:
-                log.loop()
+                for car in self.car_list:
+                    car.loop()
+                for log in self.log_list:
+                    log.loop()
+
+                self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard)
+                self.collision_handler.check_log_collision(self.frog, self.log_list)
+                self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard)
+                # Adds points and resets screen when the frog reaches the top block
+                if self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE):
+                    self.frog.reset_y()
+                    self.gameboard.refresh_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
+                    self.scoreboard.add_points(100)
+
+                if self.scoreboard.get_lives() == 0:
+                    self._game_over = True
 
 
-            #check_for_collision_with_list returns a list, so we check if the list is empty
-            if len(arcade.check_for_collision_with_list(self.frog, self.car_list)) > 0:
-
-                lives = self.scoreboard.remove_life_return_total()
-
-                if lives == 0:
-                    self._keep_playing = False
-                    self.frog.die()
-                else:
-                    self.frog.reset()
-
-
-
-            #checks for if riding log or not, and changes frog's change_x to match log speed if true
-            log_collision = False
-            for log in self.log_list:
-                if self.frog.collides_with_sprite(log):
-                    self.frog.change_x = log.change_x
-                    log_collision = True
-
-                    if self.frog.left < 0:
-                        self.frog.left = 0
-                    if self.frog.right > SCREEN_WIDTH:
-                        self.frog.right = SCREEN_WIDTH
-
-            if not log_collision:
-                self.frog.change_x = 0
-
-            #checks for water collision while not riding log
-            water_collision = False
-            for water in self.water_list:
-                if self.frog.collides_with_sprite(water):
-                    water_collision = True
-
-            if water_collision and not log_collision:
-                lives = self.scoreboard.remove_life_return_total()
-
-                if lives == 0:
-                    self._keep_playing = False
-                    self.frog.die()
-                else:
-                    self.frog.reset()
-
-        
     def on_draw(self):
         arcade.start_render()
 
         self.water_list.draw()
         self.road_and_grass_list.draw()
         self.all_sprites.draw()
+        self.frog_list.draw()
 
         #score display
-        if self._keep_playing:
-            text = self.scoreboard.calculate_scoreboard()
-        else:
-            text = "game over!"
-
         arcade.draw_text(
-            text,
-            5,
-            SCREEN_HEIGHT - 12,
-            arcade.color.BLACK
+            self.scoreboard.calculate_scoreboard(),
+            5, SCREEN_HEIGHT - 12, arcade.color.BLACK
         )
+
+        if self._game_over:
+            arcade.draw_rectangle_filled(
+                SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                BLOCK_SIZE * 10, BLOCK_SIZE * 6,
+                arcade.color.WHITE,
+            )
+            arcade.draw_text(
+                "game over :/",
+                SCREEN_WIDTH - (BLOCK_SIZE * 13), SCREEN_HEIGHT - (BLOCK_SIZE * 7),
+                arcade.color.BLACK, 20, BLOCK_SIZE * 10, "center"
+            )
+            arcade.draw_text(
+                "move to restart",
+                SCREEN_WIDTH - (BLOCK_SIZE * 13), SCREEN_HEIGHT - (BLOCK_SIZE * 10),
+                arcade.color.BLACK, 16, BLOCK_SIZE * 10, "center"
+            )
