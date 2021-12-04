@@ -27,12 +27,16 @@ class Frog(arcade.Sprite):
     def step(self, direction):
         if direction == "LEFT":
             self.center_x -= BLOCK_SIZE
+            self._set_angle(90)
         elif direction == "RIGHT":
             self.center_x += BLOCK_SIZE
+            self._set_angle(-90)
         elif direction == "UP":
             self.center_y += BLOCK_SIZE
+            self._set_angle(0)
         elif direction == "DOWN":
             self.center_y -= BLOCK_SIZE
+            self._set_angle(180)
 
         if self.left < 0:
             self.left = 0

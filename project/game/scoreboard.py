@@ -47,6 +47,8 @@ class Scoreboard:
 
         if self._score > self._high_score:
             self._high_score = self._score
+        
+        return self._score
 
 
     def get_high_score(self):
