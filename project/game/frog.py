@@ -7,6 +7,8 @@ class Frog(arcade.Sprite):
         super().__init__(img, scaling, 0, 0, BLOCK_SIZE, BLOCK_SIZE)
         self._starting_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
         self._starting_y = BLOCK_SIZE * .5
+        self._STATES_LIST = ["NORMAL", "LOG", "DEAD"]
+        self._state = None
 
         self.reset()
 
@@ -14,6 +16,8 @@ class Frog(arcade.Sprite):
     def reset(self):
         self.center_x = self._starting_x
         self.center_y = self._starting_y
+        self.change_x = 0
+        self._state = "NORMAL"
 
     
     def reset_y(self):
@@ -48,3 +52,12 @@ class Frog(arcade.Sprite):
                             # It will need to change to be able to start over within the program
 
         self.remove_from_sprite_lists()
+
+    def set_state(self, new_state="NORMAL"):
+        if new_state in self._STATES_LIST:
+            self._state = new_state
+        else:
+            print("Error: Not a valid state")
+    
+    def get_state(self):
+        return self._state
