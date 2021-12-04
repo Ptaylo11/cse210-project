@@ -50,6 +50,9 @@ class Director(arcade.Window):
         self.gameboard = Gameboard()
         self.collision_handler = Collision_Handler()
 
+        #Loads song to be played when game starts : Song credit to @shiru8bit
+        self.sound_song = arcade.load_sound('project\game\sounds\\a_little_journey.wav')
+
         
     def start_game(self):
         """Starts the game loop to control the sequence of play.
@@ -61,8 +64,8 @@ class Director(arcade.Window):
 
         self.gameboard.new_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
         self.all_sprites.append(self.frog)
+        arcade.play_sound(self.sound_song, 1, -1, True)
         self.frog_list.append(self.frog)
-
         arcade.run()
 
 
