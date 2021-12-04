@@ -2,7 +2,7 @@ from arcade import SpriteList
 from game.frog import Frog
 from game.scoreboard import Scoreboard
 from game.gameboard import Gameboard
-from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING
+from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, SCALING, BLOCK_SIZE
 from game.collision_handler import Collision_Handler
 import arcade
 
@@ -99,6 +99,12 @@ class Director(arcade.Window):
             self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard)
             self.collision_handler.check_log_collision(self.frog, self.log_list)
             self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard)
+
+            # Adds points and resets screen when the frog reaches the top block
+            if self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE):
+                self.frog.reset_y()
+                self.gameboard.refresh_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
+                self.scoreboard.add_points_and_return(100)
 
         
     def on_draw(self):
