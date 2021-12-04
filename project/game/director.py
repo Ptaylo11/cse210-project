@@ -47,6 +47,9 @@ class Director(arcade.Window):
         self.scoreboard = Scoreboard()
         self.gameboard = []
 
+        #Loads song to be played when game starts : Song credit to @shiru8bit
+        self.sound_song = arcade.load_sound('project\game\sounds\\a_little_journey.wav')
+
         
     def start_game(self):
         """Starts the game loop to control the sequence of play.
@@ -105,6 +108,7 @@ class Director(arcade.Window):
 
         
         self.all_sprites.append(self.frog)
+        arcade.play_sound(self.sound_song, 1, -1, True)
         arcade.run()
 
 

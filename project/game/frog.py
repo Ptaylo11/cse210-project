@@ -7,6 +7,7 @@ class Frog(arcade.Sprite):
         super().__init__(img, scaling, 0, 0, BLOCK_SIZE, BLOCK_SIZE)
         self._starting_x = BLOCK_SIZE * 8 + (BLOCK_SIZE * .5)
         self._starting_y = BLOCK_SIZE * .5
+        self.sound_die = arcade.load_sound('./resources/sounds/gameover2.wav')
 
         self.reset()
 
@@ -43,4 +44,5 @@ class Frog(arcade.Sprite):
                             # This is only temporary!!
                             # It will need to change to be able to start over within the program
 
+        arcade.play_sound(self.sound_die)
         self.remove_from_sprite_lists()
