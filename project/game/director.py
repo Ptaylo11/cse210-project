@@ -51,7 +51,10 @@ class Director(arcade.Window):
         self.collision_handler = Collision_Handler()
 
         #Loads song to be played when game starts : Song credit to @shiru8bit
-        self.sound_song = arcade.load_sound('project\game\sounds\\a_little_journey.wav')
+        self.sound_song = arcade.load_sound('project\game\sounds\\a_little_journey.mp3')
+
+        #Loads death sound
+        self.sound_die = arcade.load_sound('project\game\sounds\gameover2.wav')
 
         
     def start_game(self):
@@ -124,6 +127,7 @@ class Director(arcade.Window):
 
                 if self.scoreboard.get_lives() == 0:
                     self._game_over = True
+                    arcade.play_sound(self.sound_die)
 
 
     def on_draw(self):
