@@ -11,6 +11,31 @@ class Gameboard:
     def __init__(self):
 
         self._rows = []
+        self.is_scrolling = False
+
+
+    def get_is_scroll(self):
+        """ returns if the screen is set to scroll or not.
+        If not scroll the screen will move like a page
+        """
+        return self.is_scrolling
+
+
+    def set_is_scroll(self, bool):
+        """ Changes the gamemode to either scroll or not.
+        """
+        self.is_scrolling = bool
+
+    
+    def get_gamemode(self):
+        """ retrieves the current gamemode (SCROLL or LEVEL) and returns it.
+        """
+        if self.set_is_scroll:
+            gamemode = "SCROLL"
+        else:
+            gamemode = "LEVEL"
+
+        return gamemode
 
 
     def step(self, car_list, log_list, water_list, all_sprites, road_and_grass_list):
