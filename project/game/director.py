@@ -79,6 +79,10 @@ class Director(arcade.Window):
         if key == arcade.key.ESCAPE:
             self._paused = not self._paused
 
+        if key == arcade.key.Q:
+            scroll_status = self.gameboard.get_is_scroll()
+            self.gameboard.set_is_scroll(not scroll_status)
+
         if self._game_over and (key in (
             arcade.key.W, arcade.key.S, arcade.key.A, arcade.key.D,
             arcade.key.UP, arcade.key.DOWN, arcade.key.LEFT, arcade.key.RIGHT)):
@@ -119,11 +123,16 @@ class Director(arcade.Window):
                 self.collision_handler.check_car_collision(self.frog, self.car_list, self.scoreboard)
                 self.collision_handler.check_log_collision(self.frog, self.log_list)
                 self.collision_handler.check_water_collision(self.frog, self.water_list, self.scoreboard)
+                
                 # Adds points and resets screen when the frog reaches the top block
-                if self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE):
+                if not self.gameboard.get_is_scroll() and self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE):
                     self.frog.reset_y()
                     self.gameboard.refresh_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
-                    self.scoreboard.add_points(100)
+                    self.scoreboard.add_points(160)
+                elif self.gameboard.get_is_scroll() and self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE * 7):
+                    self.frog.center_y -= BLOCK_SIZE
+                    self.gameboard.step(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
+                    self.scoreboard.add_points(10)
 
                 if self.scoreboard.get_lives() == 0:
                     self._game_over = True
@@ -142,6 +151,12 @@ class Director(arcade.Window):
         arcade.draw_text(
             self.scoreboard.calculate_scoreboard(),
             5, SCREEN_HEIGHT - 12, arcade.color.BLACK
+        )
+
+        #toggle scroll display
+        arcade.draw_text(
+            f"Gamemode: {self.gameboard.get_gamemode()} - press Q to toggle",
+            5, SCREEN_HEIGHT - 26, arcade.color.BLACK
         )
 
         if self._game_over:
