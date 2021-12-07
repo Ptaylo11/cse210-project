@@ -129,9 +129,9 @@ class Director(arcade.Window):
                     self.frog.reset_y()
                     self.gameboard.refresh_board(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
                     self.scoreboard.add_points(160)
-                elif self.gameboard.get_is_scroll() and self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE * 8):
+                elif self.gameboard.get_is_scroll() and self.frog.center_y > (SCREEN_HEIGHT - BLOCK_SIZE * 7):
                     self.frog.center_y -= BLOCK_SIZE
-                    self.gameboard.step()
+                    self.gameboard.step(self.car_list, self.log_list, self.water_list, self.all_sprites, self.road_and_grass_list)
                     self.scoreboard.add_points(10)
 
                 if self.scoreboard.get_lives() == 0:
