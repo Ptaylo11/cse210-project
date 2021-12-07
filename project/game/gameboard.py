@@ -33,7 +33,7 @@ class Gameboard:
         if self.set_is_scroll:
             gamemode = "SCROLL"
         else:
-            gamemode = "LEVEL"
+            gamemode = "PAGE"
 
         return gamemode
 
