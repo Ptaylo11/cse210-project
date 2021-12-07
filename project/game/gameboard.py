@@ -30,7 +30,7 @@ class Gameboard:
     def get_gamemode(self):
         """ retrieves the current gamemode (SCROLL or LEVEL) and returns it.
         """
-        if self.set_is_scroll:
+        if self.get_is_scroll():
             gamemode = "SCROLL"
         else:
             gamemode = "PAGE"
