@@ -15,19 +15,19 @@ class Director(arcade.Window):
         Controller
 
     Attributes:
-        keep_playing: (Bool)
-        paused: (Bool)
-        car_list: instance of SpriteList
-        log_list: instance of SpriteList
-        water_list: instance of Spritelist
-        road_and_grass_list: instance of Spritelist
-        all_sprites: instance of SpriteList
-        frog: instance of Frog
-        scoreboard: instance of Scoreboard
-        gameboard: instance of Gameboard
-        collision handler: instance of Collision Handler
-    """
-
+        _game_over (Bool): Whether or not the game has ended
+        _paused (Bool): Whether or not the game is paused
+        car_list (SpriteList): The car sprite list
+        log_list (SpriteList): The log sprite list
+        water_list (SpriteList): The water sprite list
+        road_and_grass_list (SpriteList): The road and grass sprite list
+        all_sprites (SpriteList): A sprite list containing all of the sprites
+        frog (Frog): An instance of the frog sprite
+        frog_list (SpriteList): The frog sprite list
+        scoreboard (Scoreboard): An instance of Scoreboard
+        gameboard (Gameboard): An instance of Gameboard
+        collision_handler (Collision_Handler): An instance of Collision_Handler
+        """
 
     def __init__(self):
         """The class constructor.
@@ -74,7 +74,12 @@ class Director(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """Gets the inputs at the beginning of each round of play. In this case,
-        that means getting the desired direction and moving the snake.
+        that means getting the desired direction and moving the frog.
+
+        Args:
+            self (Director): An instance of Director
+            key (Int): The key that was pressed
+            modifiers (Int): The modifier that was pressed
         """
         if key == arcade.key.ESCAPE:
             self._paused = not self._paused
@@ -109,7 +114,8 @@ class Director(arcade.Window):
         this case, that means checking for a collision and updating the score.
 
         Args:
-            self (Director): An instance of Director.
+            self (Director): An instance of Director
+            delta_time (time): The amount of time since the function was last called
         """
         if not self._game_over:
             if not self._paused:
@@ -140,6 +146,12 @@ class Director(arcade.Window):
 
 
     def on_draw(self):
+        """
+        Draws the graphics used in the game.
+
+        Args:
+            self (Director): An instance of Director
+        """
         arcade.start_render()
 
         self.water_list.draw()
