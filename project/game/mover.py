@@ -13,10 +13,22 @@ class Mover(arcade.Sprite):
     Can either be one of two types:
     Car - dangerous
     Log - safe
+
+    Stereotype:
+        Controller
+    
+    Attributes:
+        type (Str): The type of sprite (road, water, car, etc.)
+        center_x (Int): The x-coordinate of the sprite
+        center_y (Int): The y-coordinate of the sprite
     """
 
     def __init__(self, type):
         """ The class constructor.
+
+        Args:
+            self (Mover): An instance of Mover
+            type (Str): The type of sprite (road, water, car, etc.)
         """
 
         super().__init__(filename = img_dict[type], scale = SCALING, image_x = 0, image_y = 0, image_width = BLOCK_SIZE * random.randint(2, 4), image_height = BLOCK_SIZE, flipped_horizontally = True)
@@ -35,7 +47,10 @@ class Mover(arcade.Sprite):
 
 
     def loop(self):
-        """ moves the mover - called by director
+        """ Moves the Mover - called by Director
+
+        Args:
+            self (Mover): An instance of Mover
         """
 
         if self.center_x > SCREEN_WIDTH + self.width:
@@ -46,6 +61,9 @@ class Mover(arcade.Sprite):
     
     def step_down(self):
         """ Called by the Row class. Moves the sprite's location down one block.
+
+        Args:
+            self (Mover): An instance of Mover
         """
 
         self.center_y -= BLOCK_SIZE
