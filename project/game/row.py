@@ -8,21 +8,28 @@ class Row:
     Each row has two main elements:
     Background - instance of Background()
     Mover - instance of Mover()
+
+    Stereotype:
+        Controller
+    
+    Attributes:
+        background (Background): An instance of Background
+        mover (Mover): An instance of Mover
+        theme (Str): The type of sprite (road, water, car, etc.)
     """
 
     def __init__(self, car_list, log_list, water_list, all_sprites, road_and_grass_list, theme=None):
         """ The class constuctor. Randomizes the theme and
         creates a row to match.
-        Attributes:
-            self (Row): Instance of Row
-            background: instance of Background
-            mover: instance of Mover
+
+        Args:
+            self (Row): An instannce of Row
             car_list (SpriteList): The car sprite list
             log_list (SpriteList): The log sprite list
             water_list (SpriteList): The water sprite list
             all_sprites (SpriteList): A sprite list containing all of the sprites
             road_and_grass_list (SpriteList): The road and grass sprite list
-            theme: Str
+            theme (Str): The type of sprite (road, water, car, etc.)
         """
         if theme == "grass":
             self.theme = theme
@@ -46,6 +53,9 @@ class Row:
 
     def step_down(self):
         """ Moves the whole row and everything in it one block-size down.
+
+        Args:
+            self (Row): An instannce of Row
         """
 
         self.background.step_down()
