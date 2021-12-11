@@ -16,6 +16,12 @@ class Background(arcade.Sprite):
     """
 
     def __init__(self, type):
+        """The class constructor.
+        
+        Args:
+            self (Background): an instance of Background.
+            type (Str): which of the three background images is being used
+        """
         super().__init__(img_dict[type], SCALING)
 
         self.type = type
@@ -28,6 +34,9 @@ class Background(arcade.Sprite):
     def step_down(self):
         """ Moves the entire background sprite down one block.
         Called by the Row class.
+        
+        Args:
+            self (Background): an instance of Background.
         """
 
         self.center_y -= BLOCK_SIZE

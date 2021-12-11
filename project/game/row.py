@@ -14,9 +14,15 @@ class Row:
         """ The class constuctor. Randomizes the theme and
         creates a row to match.
         Attributes:
-        theme: Str
-        background: instance of Background
-        mover: instance of Mover
+            self (Row): Instance of Row
+            background: instance of Background
+            mover: instance of Mover
+            car_list (SpriteList): The car sprite list
+            log_list (SpriteList): The log sprite list
+            water_list (SpriteList): The water sprite list
+            all_sprites (SpriteList): A sprite list containing all of the sprites
+            road_and_grass_list (SpriteList): The road and grass sprite list
+            theme: Str
         """
         if theme == "grass":
             self.theme = theme
