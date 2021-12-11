@@ -10,7 +10,7 @@ class Row:
     Mover - instance of Mover()
     """
 
-    def __init__(self, car_list, log_list, water_list, all_sprites, road_and_grass_list, theme=None):
+    def __init__(self, car_list, log_list, water_list, all_sprites, road_list, grass_list, direction_mod, theme=None):
         """ The class constuctor. Randomizes the theme and
         creates a row to match.
         Attributes:
@@ -27,12 +27,16 @@ class Row:
         self.mover = Mover(self.theme)
 
         if self.theme == "road":
-            road_and_grass_list.append(self.background)
+            road_list.append(self.background)
             all_sprites.append(self.mover)
             car_list.append(self.mover)
         elif self.theme == "grass":
-            road_and_grass_list.append(self.background)
+            grass_list.append(self.background)
         elif self.theme == "water":
+            #print(direction_mod)
+            self.mover.change_x *= direction_mod
+            #print(self.mover.change_x)
+
             water_list.append(self.background)
             all_sprites.append(self.mover)
             log_list.append(self.mover)

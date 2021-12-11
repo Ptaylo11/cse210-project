@@ -1,4 +1,5 @@
 from game.row import Row
+import random
 
 
 class Gameboard:
@@ -12,6 +13,10 @@ class Gameboard:
 
         self._rows = []
         self.is_scrolling = False
+        self.direction_mod = 1
+
+        if random.randint(0, 1) == 1:
+            self.direction_mod *= -1
 
 
     def get_is_scroll(self):
@@ -38,7 +43,7 @@ class Gameboard:
         return gamemode
 
 
-    def step(self, car_list, log_list, water_list, all_sprites, road_and_grass_list):
+    def step(self, car_list, log_list, water_list, all_sprites, road_list, grass_list):
         """ This steps every row and it's sprites down one block length.
         Then, a new generic row is generated at the top (random theme)
         """
@@ -48,10 +53,11 @@ class Gameboard:
 
         # generates a new row at the top block of the screen
         self._rows.append(
-            Row(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+            Row(car_list, log_list, water_list, all_sprites, road_list, grass_list, self.direction_mod)
         )
+        self.direction_mod *= -1
 
-    def step_grass(self, car_list, log_list, water_list, all_sprites, road_and_grass_list):
+    def step_grass(self, car_list, log_list, water_list, all_sprites, road_list, grass_list):
         """ This steps every row and it's sprites down one block length.
         Then, a new generic row is generated at the top (random theme)
         """
@@ -61,11 +67,11 @@ class Gameboard:
 
         # generates a new row at the top block of the screen
         self._rows.append(
-            Row(car_list, log_list, water_list, all_sprites, road_and_grass_list, "grass")
+            Row(car_list, log_list, water_list, all_sprites, road_list, grass_list, self.direction_mod, "grass")
         )
 
 
-    def new_board(self, car_list, log_list, water_list, all_sprites, road_and_grass_list):
+    def new_board(self, car_list, log_list, water_list, all_sprites, road_list, grass_list):
         """ Generates a starting game board. This board consists of:
                 3 rows of grass
                 12 rows 
@@ -73,23 +79,25 @@ class Gameboard:
 
         # generates the first 3 rows as grass
         for _ in range(3):
-            self.step_grass(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+            self.step_grass(car_list, log_list, water_list, all_sprites, road_list, grass_list)
 
         # generates the next 12 rows. Theme is randomly selected in the Row constructor
         for _ in range(12):
-            self.step(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+            self.step(car_list, log_list, water_list, all_sprites, road_list, grass_list)
 
         # generates the last row (16th) as grass
-        self.step_grass(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+        self.step_grass(car_list, log_list, water_list, all_sprites, road_list, grass_list)
 
     
-    def refresh_board(self, car_list, log_list, water_list, all_sprites, road_and_grass_list):
+    def refresh_board(self, car_list, log_list, water_list, all_sprites, road_list, grass_list):
         """ Refreshing the board means making a new board.
         However, the bottom row needs to be the same as the previous top row.
         Calls the self.step method 14 times, then the self.step_grass method once
         """
+        if random.randint(0, 1) == 1:
+            self.direction_mod *= -1
 
         for _ in range(14):
-            self.step(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+            self.step(car_list, log_list, water_list, all_sprites, road_list, grass_list)
 
-        self.step_grass(car_list, log_list, water_list, all_sprites, road_and_grass_list)
+        self.step_grass(car_list, log_list, water_list, all_sprites, road_list, grass_list)
