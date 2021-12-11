@@ -1,4 +1,4 @@
-# Final Project - Frogger
+# Frogger - Don't Get Squashed!
 
 ## Required Technologies
 ---
