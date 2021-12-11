@@ -3,7 +3,10 @@ from game.constants import SCREEN_WIDTH
 
 class Collision_Handler():
     """ 
-    Handles any behavior involving collisions
+    Handles any behavior involving collisions.
+
+    Stereotype:
+        Controller
     """
 
     def __init__(self):
