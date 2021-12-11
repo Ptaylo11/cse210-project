@@ -5,6 +5,9 @@ class Frog(arcade.Sprite):
     """
     The player controlled character. Inherits from Sprite.
 
+    Stereotype:
+        Controller
+
     Attributes: 
         _starting_x (float): the horizontal position the frog starts at and is reset to
         _starting_y (float): the vertical position the frog starts at and is reset to
