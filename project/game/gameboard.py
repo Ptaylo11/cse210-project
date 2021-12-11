@@ -9,7 +9,11 @@ class Gameboard:
     """
 
     def __init__(self):
-
+        """The class constructor.
+        
+        Args:
+            self (Gameboard): an instance of Gameboard.
+        """
         self._rows = []
         self.is_scrolling = False
 

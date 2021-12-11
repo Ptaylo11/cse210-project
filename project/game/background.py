@@ -16,6 +16,12 @@ class Background(arcade.Sprite):
     """
 
     def __init__(self, type):
+        """The class constructor.
+        
+        Args:
+            self (Background): an instance of Background.
+            type (Image): which of the three background images is being used
+        """
         super().__init__(img_dict[type], SCALING)
 
         self.type = type
