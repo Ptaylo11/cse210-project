@@ -11,3 +11,4 @@
 * Ryan Brower - rbrower28@byui.edu
 * Kenyon Jones - jon20019@byui.edu
 * Stephen Sanders - stephen64s@byui.edu
+* Payton Taylor - ptaylo11@byui.edu
