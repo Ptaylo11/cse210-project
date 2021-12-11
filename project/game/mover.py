@@ -41,7 +41,7 @@ class Mover(arcade.Sprite):
         else:
             self.change_x = random.randint(1, 3)
 
-        if random.randint(0, 1) == 1:
+        if random.randint(0, 1) == 1 and type != "water":
             self.change_x *= -1
             self._set_angle(180)
 
